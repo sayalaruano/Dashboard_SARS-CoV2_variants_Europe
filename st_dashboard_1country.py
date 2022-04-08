@@ -59,11 +59,16 @@ st.header('Dashboard of weekly reports of SARS-CoV2 variants in Germany from 202
 
 st.subheader('by Sebastián Ayala-Ruano ([@sayalaruano](https://twitter.com/sayalaruano))')
 
-add_sidebar = st.sidebar.write('Select a date to show the data')
+st.sidebar.write('Select a date to show the data')
 
 add_sidebar = st.sidebar.selectbox('Year-week:', df["year_week"].unique())
 
-add_sidebar = st.sidebar.write('**Note:** If no plots are displayed, it means that there are no data on those weeks.')
+st.sidebar.write('**Note:** If no plots are displayed, it means that there are no data on those weeks.')
+
+st.sidebar.write('The data is available [here](https://www.ecdc.europa.eu/en/publications-data/data-virus-variants-covid-19-eueea)')
+
+st.sidebar.write('If you have comments or suggestions about this work, please DM by [twitter](https://twitter.com/sayalaruano) or [create an issue](https://github.com/sayalaruano/Dashboard_SARS-CoV2_variants_Europe/issues/new) in the GitHub repository of this project.')
+
 
 for i in df["year_week"].unique():
     if add_sidebar == i:
