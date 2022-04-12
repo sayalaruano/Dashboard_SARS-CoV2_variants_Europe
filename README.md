@@ -1,4 +1,4 @@
-# Dashboard of weekly reports of SARS-CoV2 variants in European countries from 2020 until April 2022
+# Dashboard of weekly reports of SARS-CoV2 variants in European countries since 2020 until April 2022
 
 ## About the project
 
