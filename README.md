@@ -14,8 +14,6 @@ The screenshot below shows what this dashboard looks like:
 
 You can access the web application of this dashboard with this [link](https://share.streamlit.io/sayalaruano/dashboard_sars-cov2_variants_europe/main/st_dashboard_allcountries.py).
 
-I 
-
 ## Dataset 
 
 The entire dataset is available [here](https://www.ecdc.europa.eu/en/publications-data/data-virus-variants-covid-19-eueea). I only considered information from the [GISAID](https://www.gisaid.org/) database.
