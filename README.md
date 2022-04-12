@@ -4,11 +4,11 @@
 
 I created this dashboard for the [30DaysOfStreamlit](https://share.streamlit.io/streamlit/30days) challenge using the [streamlit](https://streamlit.io/) Python package.
 
-The screen-shot bellow shows how this dashboard looks like: 
+The screenshot below shows what this dashboard looks like: 
 
 <br />
 
-<img src="dashboard_screenshot.png" width="800" height="600" alt="dahsboard screen-shot"/>
+<img src="dashboard_screenshot.png" width="900" height="600" alt="dahsboard screenshot"/>
 
 <br />
 
