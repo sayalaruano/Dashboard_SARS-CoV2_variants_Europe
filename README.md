@@ -8,11 +8,11 @@ The screen-shot bellow shows how this dashboard looks like:
 
 <br />
 
-<img src="dashboard_screenshot.png" width="800" height="150" alt="dahsboard screen-shot"/>
+<img src="dashboard_screenshot.png" width="800" height="600" alt="dahsboard screen-shot"/>
 
 <br />
 
-You can access the web application of this dashboard with this link: https://share.streamlit.io/sayalaruano/dashboard_sars-cov2_variants_europe/main/st_dashboard_allcountries.py
+You can access the web application of this dashboard with this [link](https://share.streamlit.io/sayalaruano/dashboard_sars-cov2_variants_europe/main/st_dashboard_allcountries.py).
 
 ## Dataset 
 
