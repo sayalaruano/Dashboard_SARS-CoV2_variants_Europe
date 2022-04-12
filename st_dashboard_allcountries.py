@@ -3,6 +3,11 @@ import pandas as pd
 import plotly.graph_objects as go
 import plotly.express as px
 import streamlit as st
+from millify import prettify
+
+# Attach customized ccs style
+with open('style.css') as f:
+    st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
 
 # Function to load data of Sars-CoV2 variants in Europe
 @st.cache
@@ -33,26 +38,39 @@ def load_data():
 # Load data
 df = load_data()
 
+# Create streamlit app
 
+st.header('Dashboard of weekly reports of SARS-CoV2 variants in European countries from 2020 until now')
 
-# Filter data of Germany
-df_covid_ger = df[df["country"] == "Germany"]
+st.subheader('by [Sebastián Ayala-Ruano](https://sayalaruano.github.io/)')
+
+st.sidebar.header('About')
+
+st.sidebar.write('A project created for the [30DaysOfStreamlit](https://share.streamlit.io/streamlit/30days) challenge.')
+
+st.sidebar.header('How it works?')
+
+st.sidebar.write('Select a country in the sidebar, and a year and week in the the main page to show the data of SARS-CoV2 variants.')
+
+country = st.sidebar.selectbox('Country:', df["country"].unique())
+
+# Filter data of the selected country
+df_covid = df[df["country"] == country]
 
 # Create donut plots of Sars-CoV2 variant distribution in european countries
 donut_plots= {}
 
 for j in df["year_week"].unique():
-    df_temp = df_covid_ger[(df_covid_ger["year_week"] ==j) & (df_covid_ger["source"] =="GISAID")]
+    df_temp = df_covid[(df_covid["year_week"] ==j) & (df_covid["source"] =="GISAID")]
     plot_temp = go.Figure(data=[go.Pie(labels=df_temp["variant"], 
     values=df_temp["percent_variant"], hole=.4)])
     donut_plots[j] = plot_temp
     
-
 # Create bar plots of the number of detections of Sars-CoV2 variants in european countries
 bar_plots = {}
 
 for j in df["year_week"].unique():
-    df_temp = df_covid_ger[(df_covid_ger["year_week"] ==j) & (df_covid_ger["source"] =="GISAID")]
+    df_temp = df_covid[(df_covid["year_week"] ==j) & (df_covid["source"] =="GISAID")]
     plot_temp = px.bar(df_temp, y='number_detections_variant', x='variant',
             text_auto='.2s', labels={
                     "number_detections_variant": "Number of detections",
@@ -61,33 +79,23 @@ for j in df["year_week"].unique():
     plot_temp.update_traces(textfont_size=12, textangle=0, textposition="outside", showlegend=False)
     bar_plots[j] = plot_temp
 
-# Create streamlit app
-
-st.header('Dashboard of weekly reports of SARS-CoV2 variants in Germany from 2020 until now')
-
-st.subheader('by [Sebastián Ayala-Ruano](https://sayalaruano.github.io/)')
-
-st.sidebar.header('About')
-
-st.sidebar.write('I created this project as part of the [30DaysOfStreamlit](https://share.streamlit.io/streamlit/30days) challenge.')
-
-st.sidebar.header('How it works?')
-
-st.sidebar.write('Select a year in the sidebar and a week in the slidebar of the main page to show the data of SARS-CoV2 variants of that date.')
-
-year = st.sidebar.selectbox('Year:', df["year"].unique())
-
-st.sidebar.write('**Note:** If no plots are displayed, it means that there are no data on those weeks.')
+st.sidebar.write('**Note:** If no plots are displayed, it means that there are no data for those weeks.')
 
 st.sidebar.header('Data')
 
-st.sidebar.write('The entire dataset is available [here](https://www.ecdc.europa.eu/en/publications-data/data-virus-variants-covid-19-eueea). I only considered the data from the [GISAID](https://www.gisaid.org/) database.')
+st.sidebar.write('The entire dataset is available [here](https://www.ecdc.europa.eu/en/publications-data/data-virus-variants-covid-19-eueea). I only considered information from the [GISAID](https://www.gisaid.org/) database.')
+
+st.sidebar.header('Code availability')
+
+st.sidebar.write('The code for this project is available under the [MIT License](https://mit-license.org/) in this [GitHub repo](https://github.com/sayalaruano/Dashboard_SARS-CoV2_variants_Europe). If you use or modify the source code of this project, please provide the proper attributions for this work.')
 
 st.sidebar.header('Contact')
 
 st.sidebar.write('If you have comments or suggestions about this work, please DM by [twitter](https://twitter.com/sayalaruano) or [create an issue](https://github.com/sayalaruano/Dashboard_SARS-CoV2_variants_Europe/issues/new) in the GitHub repository of this project.')
 
-week = st.slider('Choose a week', 1, 53, 5)
+year = st.selectbox('Year:', df["year"].unique())
+
+week = st.slider('Choose a week', 1, 53, 9)
 
 for i in df["year"].unique():
     for j in df["week"].unique():
@@ -96,14 +104,25 @@ for i in df["year"].unique():
                 year_week = i+'-'+'0'+str(j)
             else:
                 year_week = i+'-'+str(j)
-            st.write(year_week)
-            st.markdown("**Variant distribution**")
+
+            if year_week in df["year_week"].unique():
+                new_cases = df_covid[df_covid["year_week"] == year_week].iloc[1]['new_cases']
+                seq_cases = df_covid[df_covid["year_week"] == year_week].iloc[1]['number_sequenced']
+                perc_seq_cases = df_covid[df_covid["year_week"] == year_week].iloc[1]['percent_cases_sequenced']
+
+                col1, col2, col3 = st.columns(3)
+                col1.metric("New COVID-19 cases", prettify(new_cases))
+                col2.metric("Sequenced COVID-19 cases", prettify(seq_cases))
+                col3.metric("% of COVID-19 sequenced cases", str(perc_seq_cases)+"%")
+            else: 
+                st.write("No data available")
+            st.markdown("#### **Variant distribution**")
             if year_week in donut_plots:
                 donut_plot = donut_plots[year_week]
                 st.plotly_chart(donut_plot)
             else:
                 st.write("No data available")
-            st.markdown("**Number of variants**")
+            st.markdown("#### **Number of variants**")
             if year_week in bar_plots:
                 bar_plot = bar_plots[year_week]
                 st.plotly_chart(bar_plot)
