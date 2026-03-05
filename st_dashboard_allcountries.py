@@ -91,7 +91,7 @@ st.sidebar.write('The code for this project is available under the [MIT License]
 
 st.sidebar.header('Contact')
 
-st.sidebar.write('If you have comments or suggestions about this work, please DM by [twitter](https://twitter.com/sayalaruano) or [create an issue](https://github.com/sayalaruano/Dashboard_SARS-CoV2_variants_Europe/issues/new) in the GitHub repository of this project.')
+st.sidebar.write('If you have any comments or suggestions about this work, please DM by [twitter](https://twitter.com/sayalaruano) or [create an issue](https://github.com/sayalaruano/Dashboard_SARS-CoV2_variants_Europe/issues/new) in the GitHub repository of this project.')
 
 year = st.selectbox('Year:', df["year"].unique())
 
